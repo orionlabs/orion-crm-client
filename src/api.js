@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-// axios.defaults.baseURL = 'https://orion-crm-server-79qy.onrender.com/api/v1';
-axios.defaults.baseURL = 'http://localhost:8080/api/v1';
+axios.defaults.baseURL = 'https://orion-crm-server-79qy.onrender.com/api/v1';
+//axios.defaults.baseURL = 'http://localhost:8080/api/v1';
 
 export const instance = axios.create({
   // baseURL: 'https://orion-crm-server-79qy.onrender.com/api/v1', // Set the base URL for all requests
