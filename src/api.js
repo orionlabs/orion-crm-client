@@ -1,9 +1,11 @@
 import axios from 'axios';
 
-axios.defaults.baseURL = 'https://orion-crm-server-79qy.onrender.com/api/v1';
+// axios.defaults.baseURL = 'https://orion-crm-server-79qy.onrender.com/api/v1';
+axios.defaults.baseURL = 'http://localhost:8080/api/v1';
 
 export const instance = axios.create({
-  baseURL: 'https://orion-crm-server-79qy.onrender.com/api/v1', // Set the base URL for all requests
+  // baseURL: 'https://orion-crm-server-79qy.onrender.com/api/v1', // Set the base URL for all requests
+  baseURL: 'http://localhost:8080/api/v1', // Set the base URL for all requests
   timeout: 5000, // Set the default timeout for requests to 5 seconds
   headers: {
     'Content-Type': 'application/json', // Set the default content type for requests
@@ -15,6 +17,16 @@ export const instance = axios.create({
 export const fetchClients = async () => {
   try {
     const response = await axios.get('/clients');
+    return response.data;
+  } catch (err) {
+    console.error('Error fetching data:', err);
+    throw err;
+  }
+};
+
+export const fetchClientsByUserId = async (userId) => {
+  try {
+    const response = await axios.get(`/clients/user/${userId}`);
     return response.data;
   } catch (err) {
     console.error('Error fetching data:', err);

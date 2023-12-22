@@ -43,6 +43,7 @@ export default function Router() {
         { element: <Navigate to="/dashboard/app" />, index: true },
         { path: 'app', element: <DashboardAppPage /> },
         { path: 'clients', element: <UserPage /> },
+        { path: 'clients/user/:userId', element: <UserPage /> },
         { path: 'clients-2', element: <UserPage2 /> },
         { path: 'add-new-client', element: <AddNewClient/> },
         { path: 'clients/:clientId', element: <SingleClientPage /> },

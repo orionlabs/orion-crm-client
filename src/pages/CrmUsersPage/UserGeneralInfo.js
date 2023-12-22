@@ -1,5 +1,7 @@
 import React from 'react';
-import { Avatar, Typography } from '@mui/material';
+import { Avatar, Button, Typography } from '@mui/material';
+import { RemoveRedEye } from '@mui/icons-material';
+import { Link } from 'react-router-dom';
 // import { makeStyles } from '@mui/styles';
 
 
@@ -33,9 +35,10 @@ const UserGeneralInfo = ({user}) => {
                 <Typography variant="body2" color="textSecondary">
                     {user.email}
                 </Typography>
-                <Typography variant="body1" mt={2} color="textSecondary">
+                <Typography mb={2} variant="body1" mt={2} color="textSecondary">
                     Joined On: {new Date(user.created_at).toLocaleDateString()}
                 </Typography>
+                <Button variant='contained' startIcon={<RemoveRedEye/>}><Link to={`/dashboard/clients/user/${user.user_id}`}>View Clients</Link></Button>
             </div>
         </div>
     );

@@ -21,7 +21,7 @@ import {
 } from '@mui/material';
 
 // components
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
 import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
@@ -30,8 +30,10 @@ import Scrollbar from '../components/scrollbar';
 import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
 
 // mock
-import fetchedClients from '../_mock/user';
+// import fetchedClients from '../_mock/user';
 import { LoadingContext } from '../App';
+
+import { fetchClients } from '../api';
 
 // ----------------------------------------------------------------------
 
@@ -79,6 +81,54 @@ function applySortFilter(array, comparator, query) {
 // --------------------------------------
 
 export default function UserPage() {
+  const { userId } = useParams()
+  // debugger // eslint-disable-line no-debugger
+  console.log(userId)
+
+  const [fetchedClients, setFetchedClients] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        // debugger; // eslint-disable-line no-debugger
+        if (userId) {
+          console.log({ userId });
+          const res = await axios.get(`/clients/user/${userId}`);
+          setFetchedClients(res.data);
+        } else {
+          console.log({ userId });
+          const res = await axios.get('/clients');
+          setFetchedClients(res.data);
+        }
+        setLoading(false);
+      } catch (err) {
+        console.error(err);
+        setLoading(false);
+      }
+    };
+
+    fetchData(); // Call the async function immediately
+
+  }, [userId]);
+
+
+
+
+
+
+
+
+  const fetchClientsFunc = async () => {
+    console.log('World')
+    try {
+      const data = await fetchClients();
+      fetchedClients.push(...data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   const [loading, setLoading] = useContext(LoadingContext);
 
   const [page, setPage] = useState(0);
@@ -154,19 +204,32 @@ export default function UserPage() {
   // useEffect(() => console.log(filteredUsers), []);
 
   useEffect(() => {
-    (async () => {
-      try {
-        setLoading(true)
-        axios.get('/clients')
-          .then(res => setClients(res.data))
-          .then(()=> setLoading(false))
-      }catch(err){
-        console.error(err)
-      }
-    })()
+    fetchClientsFunc()
   }, [])
 
-  useEffect(()=>{
+  // useEffect(() => {
+  //   (async (userId) => {
+  //     try {
+  //       setLoading(true)
+  //       debugger; // eslint-disable-line no-debugger
+  //       if(userId){
+  //         console.log({userId})
+  //         axios.get(`/clients/user/${userId}`)
+  //         .then(res => setClients(res.data))
+  //         .then(() => setLoading(false))
+  //       }else{
+  //         console.log({userId})
+  //         axios.get('/clients')
+  //         .then(res => setClients(res.data))
+  //         .then(() => setLoading(false))
+  //       }
+  //     } catch (err) {
+  //       console.error(err)
+  //     }
+  //   })()
+  // }, [userId])
+
+  useEffect(() => {
     console.log(clients)
   }, [clients])
 
@@ -226,7 +289,7 @@ export default function UserPage() {
                         <TableCell align="left">{clientId}</TableCell>
 
                         <TableCell component="th" scope="row" padding="none">
-                          <Link style={{ textDecoration: 'none', color: 'unset' }} to={`${clientId}`}>
+                          <Link style={{ textDecoration: 'none', color: 'unset' }} to={`/dashboard/clients/${clientId}`}>
                             <Stack direction="row" alignItems="center" spacing={2}>
                               <Avatar alt={fullName} src={null} />
                               <Typography variant="subtitle2" noWrap>
