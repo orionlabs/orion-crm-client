@@ -60,8 +60,33 @@ const SingleBill = ({ route }) => {
                         <Typography variant='h6'>Billing Details</Typography>
                     </Stack>
                     <Stack m={4} alignItems={"center"}>
-
-                        <Typography variant='h2' mb={4}>{`₹${billData?.amount}`}</Typography>
+                        <Table sx={{ width: '50%', mb: 4 }}>
+                            <TableRow>
+                                <TableCell>Total Amount</TableCell>
+                                <TableCell>Paid Amount</TableCell>
+                                <TableCell>Balance Amount</TableCell>
+                            </TableRow>
+                            <TableBody>
+                                {billData?.amount && (
+                                    <TableCell>{billData?.amount}</TableCell>
+                                )}
+                                {billData?.paid_amount && (
+                                    <TableCell sx={{bgcolor: 'tomato'}}>{-billData?.paid_amount}</TableCell>
+                                )}
+                                {billData?.amount && billData?.paid_amount && (
+                                    <TableCell sx={{bgcolor: 'lightgreen'}}>{billData?.amount - billData?.paid_amount}</TableCell>
+                                )}
+                            </TableBody>
+                        </Table>
+                        {/* {billData?.amount && (
+                            <Typography variant='h2' mb={4}>{`₹${billData?.amount}`}</Typography>
+                        )}
+                        {billData?.paid_amount && (
+                            <Typography variant='h2' mb={4}>{`₹${billData?.paid_amount}`}</Typography>
+                        )}
+                        {billData?.amount && billData?.paid_amount && (
+                            <Typography variant='h2' mb={4}>{`₹${billData?.amount - billData?.paid_amount}`}</Typography>
+                        )} */}
 
                         {/* <Typography variant='h4' sx={{ textTransform: 'uppercase', mb: 4 }}>Shizan Vasim</Typography> */}
 
