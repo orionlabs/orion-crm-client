@@ -1,11 +1,11 @@
 import axios from 'axios';
 
-axios.defaults.baseURL = 'https://orion-crm-server-79qy.onrender.com/api/v1';
-// axios.defaults.baseURL = 'http://localhost:8080/api/v1';
+axios.defaults.baseURL = 'http://localhost:8080/api/v1';
+// axios.defaults.baseURL = 'https://orion-crm-server-ts.onrender.com/api/v1';
 
 export const instance = axios.create({
-  baseURL: 'https://orion-crm-server-79qy.onrender.com/api/v1', // Set the base URL for all requests
-  // baseURL: 'http://localhost:8080/api/v1', // Set the base URL for all requests
+  baseURL: 'http://localhost:8080/api/v1', // Set the base URL for all requests
+  // baseURL: 'https://orion-crm-server-ts.onrender.com/api/v1', // Set the base URL for all requests
   timeout: 5000, // Set the default timeout for requests to 5 seconds
   headers: {
     'Content-Type': 'application/json', // Set the default content type for requests
@@ -143,7 +143,7 @@ export const login = async (username, password) => {
 
 export const adminLogin = async (username, password) => {
   try {
-    const { data } = await axios.post('/login/admin', { username, password });
+    const { data } = await axios.post('/login', { username, password });
 
     if (data.success) {
       // Store the token securely (e.g., in localStorage)

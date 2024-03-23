@@ -1,6 +1,17 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button, TextField, Container, Grid, Paper, Typography, Snackbar, Alert, Avatar, IconButton } from '@mui/material';
+import {
+  Button,
+  TextField,
+  Container,
+  Grid,
+  Paper,
+  Typography,
+  Snackbar,
+  Alert,
+  Avatar,
+  IconButton,
+} from '@mui/material';
 import { Close } from '@mui/icons-material';
 import { postClient } from '../../api';
 import { LoadingContext } from '../../App';
@@ -8,7 +19,7 @@ import { LoadingContext } from '../../App';
 const AddNewClient = () => {
   const navigate = useNavigate();
 
-  const [loading, setLoading] = useContext(LoadingContext);
+  const { loading, setLoading } = useContext(LoadingContext);
 
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -39,28 +50,24 @@ const AddNewClient = () => {
     setFormData({ ...formData, profile_picture: event.target.files[0] });
   };
 
-
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formDataToSend = {
-      ...formData
+      ...formData,
     };
 
-
-    console.log(formDataToSend)
-
+    console.log(formDataToSend);
 
     try {
-      setLoading(true)
+      setLoading(true);
       const response = await postClient(formDataToSend);
       if (response === 'Client Added Successfully') {
         setSeverity('success');
-        
-        
+
         // Redirect to clients route
         navigate('/dashboard/clients');
         window.location.reload();
-        setLoading(false)
+        setLoading(false);
       } else {
         setSeverity('error');
       }
@@ -78,7 +85,7 @@ const AddNewClient = () => {
     setSnackbarOpen(false);
   };
 
-  useEffect(() => console.log(selectedFile), [selectedFile])
+  useEffect(() => console.log(selectedFile), [selectedFile]);
 
   return (
     <Container component="main">
@@ -86,19 +93,19 @@ const AddNewClient = () => {
         <Typography mb={3} variant="h5">
           Add New Client
         </Typography>
-        <form encType="multipart/form-data" method='post' onSubmit={handleSubmit}>
+        <form encType="multipart/form-data" method="post" onSubmit={handleSubmit}>
           <Grid container spacing={3} mb={3}>
             <Grid item xs={12}>
-              {selectedFile === null ?
-                (<Avatar alt={'Shizan'} src={null} />)
-                :
-                (<>
+              {selectedFile === null ? (
+                <Avatar alt={'Shizan'} src={null} />
+              ) : (
+                <>
                   <IconButton onClick={() => setSelectedFile(null)} sx={{ position: 'absolute' }}>
                     <Close sx={{ color: '#009966' }} />
                   </IconButton>
                   <img width={100} src={selectedFile} alt={formData.first_name} />
-                </>)
-              }
+                </>
+              )}
               <Typography>Upload Profile Picture</Typography>
               <TextField
                 type="file"

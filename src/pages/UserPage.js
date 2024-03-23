@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import { filter } from 'lodash';
 // import { sentenceCase } from 'change-case';
-import { useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 // @mui
 import {
   Card,
@@ -18,11 +18,14 @@ import {
   Typography,
   TableContainer,
   TablePagination,
+  Modal,
 } from '@mui/material';
 
 // components
 import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
+import { useDropzone } from 'react-dropzone';
+import ImportBillsModal from '../components/modals/import-bills-modal';
 import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
 
@@ -81,9 +84,9 @@ function applySortFilter(array, comparator, query) {
 // --------------------------------------
 
 export default function UserPage() {
-  const { userId } = useParams()
+  const { userId } = useParams();
   // debugger // eslint-disable-line no-debugger
-  console.log(userId)
+  console.log(userId);
 
   const [fetchedClients, setFetchedClients] = useState([]);
 
@@ -109,18 +112,10 @@ export default function UserPage() {
     };
 
     fetchData(); // Call the async function immediately
-
   }, [userId]);
 
-
-
-
-
-
-
-
   const fetchClientsFunc = async () => {
-    console.log('World')
+    console.log('World');
     try {
       const data = await fetchClients();
       fetchedClients.push(...data);
@@ -129,7 +124,7 @@ export default function UserPage() {
     }
   };
 
-  const [loading, setLoading] = useContext(LoadingContext);
+  const {loading, setLoading} = useContext(LoadingContext);
 
   const [page, setPage] = useState(0);
 
@@ -143,15 +138,9 @@ export default function UserPage() {
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const [clients, setClients] = useState([])
+  const [clients, setClients] = useState([]);
 
-  // const handleOpenMenu = (event) => {
-  //   setOpen(event.currentTarget);
-  // };
-
-  // const handleCloseMenu = () => {
-  //   setOpen(null);
-  // };
+  const [billImportModalOpen, setBillImportModalOpen] = useState(false);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -204,34 +193,12 @@ export default function UserPage() {
   // useEffect(() => console.log(filteredUsers), []);
 
   useEffect(() => {
-    fetchClientsFunc()
-  }, [])
-
-  // useEffect(() => {
-  //   (async (userId) => {
-  //     try {
-  //       setLoading(true)
-  //       debugger; // eslint-disable-line no-debugger
-  //       if(userId){
-  //         console.log({userId})
-  //         axios.get(`/clients/user/${userId}`)
-  //         .then(res => setClients(res.data))
-  //         .then(() => setLoading(false))
-  //       }else{
-  //         console.log({userId})
-  //         axios.get('/clients')
-  //         .then(res => setClients(res.data))
-  //         .then(() => setLoading(false))
-  //       }
-  //     } catch (err) {
-  //       console.error(err)
-  //     }
-  //   })()
-  // }, [userId])
+    fetchClientsFunc();
+  }, []);
 
   useEffect(() => {
-    console.log(clients)
-  }, [clients])
+    console.log(clients);
+  }, [clients]);
 
   return (
     <>
@@ -244,10 +211,24 @@ export default function UserPage() {
           <Typography variant="h4" gutterBottom>
             Clients
           </Typography>
-          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
-            <Link to="/dashboard/add-new-client">New Client</Link>
-          </Button>
+          <Stack direction={'row'} columnGap={2}>
+            <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
+              <Link to="/dashboard/add-new-client">New Client</Link>
+            </Button>
+            <Button
+              onClick={() => setBillImportModalOpen(true)}
+              variant="outlined"
+              startIcon={<Iconify icon="vscode-icons:file-type-excel" />}
+            >
+              Import Bills From Excel
+            </Button>
+          </Stack>
         </Stack>
+
+        {/* Import Bills From Excel Modal */}
+        <Modal onClose={() => setBillImportModalOpen(false)} open={billImportModalOpen}>
+          <ImportBillsModal setBillImportModalOpen={setBillImportModalOpen} />
+        </Modal>
 
         <Card>
           <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
@@ -273,9 +254,8 @@ export default function UserPage() {
                       shop_name: shopName,
                       mobile_no: mobileNo,
                       email_id: emailId,
-                      area: areaData
+                      area: areaData,
                     } = row;
-
 
                     const fullName = `${firstName} ${lastName}`;
                     const selectedUser = selected.indexOf(clientId) !== -1;
@@ -289,7 +269,10 @@ export default function UserPage() {
                         <TableCell align="left">{clientId}</TableCell>
 
                         <TableCell component="th" scope="row" padding="none">
-                          <Link style={{ textDecoration: 'none', color: 'unset' }} to={`/dashboard/clients/${clientId}`}>
+                          <Link
+                            style={{ textDecoration: 'none', color: 'unset' }}
+                            to={`/dashboard/clients/${clientId}`}
+                          >
                             <Stack direction="row" alignItems="center" spacing={2}>
                               <Avatar alt={fullName} src={null} />
                               <Typography variant="subtitle2" noWrap>

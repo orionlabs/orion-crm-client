@@ -25,3 +25,15 @@ export function fToNow(date) {
       })
     : '';
 }
+
+export function excelDateToJSDate(excelDate) {
+  // Excel serial date starts from January 1, 1900
+  const excelStartDate = new Date(1899, 11, 31); // December 31, 1899
+  const millisecondsInDay = 24 * 60 * 60 * 1000;
+
+  // Convert excelDate to milliseconds
+  const offset = (excelDate - 1) * millisecondsInDay;
+
+  // Calculate the date by adding the offset to the excelStartDate
+  return new Date(excelStartDate.getTime() + offset);
+}

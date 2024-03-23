@@ -3,6 +3,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { Provider } from 'mobx-react';
 import axios from 'axios';
+import { SnackbarProvider } from 'notistack';
 // routes
 import Router from './routes';
 // theme
@@ -16,20 +17,20 @@ import LogoutPage from './pages/LogoutPage';
 
 // ----------------------------------------------------------------------
 
-export const LoadingContext = createContext()
+export const LoadingContext = createContext();
 
 export default function App() {
-  const [loading, setLoading] = useState(false)
-  const token = localStorage.getItem("token")
-  const { setUserInfo } = userStore
+  const [loading, setLoading] = useState(false);
+  const token = localStorage.getItem('token');
+  const { setUserInfo } = userStore;
 
   useEffect(() => {
     (async () => {
       if (!token) {
-        console.log("Please Login First");
+        console.log('Please Login First');
       } else {
         try {
-          const response = await axios.post('/login/protected', { "token": token });
+          const response = await axios.post('/login/protected', { token: token });
 
           if (response.status === 200) {
             console.log('Token is valid');
@@ -47,21 +48,21 @@ export default function App() {
     })();
   }, [setUserInfo, token]);
 
-
-
   return (
-    <Provider>
-      <LoadingContext.Provider value={[loading, setLoading]}>
-        <HelmetProvider>
-          <BrowserRouter>
-            <ThemeProvider>
-              <ScrollToTop />
-              <StyledChart />
-              <Router />
-            </ThemeProvider>
-          </BrowserRouter>
-        </HelmetProvider>
-      </LoadingContext.Provider>
-    </Provider>
+    <SnackbarProvider autoHideDuration={4000} anchorOrigin={{ horizontal: 'right', vertical: 'top' }}>
+      <Provider>
+        <LoadingContext.Provider value={{loading, setLoading}}>
+          <HelmetProvider>
+            <BrowserRouter>
+              <ThemeProvider>
+                <ScrollToTop />
+                <StyledChart />
+                <Router />
+              </ThemeProvider>
+            </BrowserRouter>
+          </HelmetProvider>
+        </LoadingContext.Provider>
+      </Provider>
+    </SnackbarProvider>
   );
 }

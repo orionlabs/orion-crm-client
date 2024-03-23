@@ -100,7 +100,7 @@ function EnhancedTableToolbar(props) {
 const CrmUsersPage = () => {
     const [open, setOpen] = useState(false);
 
-    const [, setLoading] = useContext(LoadingContext);
+    const {setLoading} = useContext(LoadingContext);
     const [users, setUsers] = useState([])
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);

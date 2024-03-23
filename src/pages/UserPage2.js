@@ -92,7 +92,7 @@ function EnhancedTableToolbar(props) {
 }
 
 const UserPage2 = () => {
-    const [, setLoading] = useContext(LoadingContext);
+    const {setLoading} = useContext(LoadingContext);
     const [clients, setClients] = useState([])
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);

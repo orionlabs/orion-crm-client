@@ -14,9 +14,9 @@ import { ProductSort, ProductList, ProductFilterSidebar } from '../sections/@das
 // ----------------------------------------------------------------------
 
 export default function ProductsPage() {
-  const [, setLoading] = useContext(LoadingContext);
+  const { setLoading } = useContext(LoadingContext);
 
-  const [products, setProducts] = useState([])
+  const [products, setProducts] = useState([]);
 
   const [openFilter, setOpenFilter] = useState(false);
 
@@ -41,19 +41,18 @@ export default function ProductsPage() {
       });
   }, [setLoading]);
 
-
   return (
     <>
       <Helmet>
         <title> Dashboard: Products | Minimal UI </title>
       </Helmet>
       <Container>
-        <Stack direction={'row'}justifyContent={'space-between'} pb={4}>
-          <Typography variant="h4">
-            Products
-          </Typography>
+        <Stack direction={'row'} justifyContent={'space-between'} pb={4}>
+          <Typography variant="h4">Products</Typography>
 
-          <Button startIcon={<Iconify icon="eva:plus-fill" />} variant={'contained'}><Link to={'add-product'}>Add New</Link></Button>
+          <Button startIcon={<Iconify icon="eva:plus-fill" />} variant={'contained'}>
+            <Link to={'add-product'}>Add New</Link>
+          </Button>
         </Stack>
 
         <Stack direction="row" flexWrap="wrap-reverse" alignItems="center" justifyContent="flex-end" sx={{ mb: 5 }}>

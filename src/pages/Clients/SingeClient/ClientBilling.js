@@ -107,7 +107,7 @@ const ClientBilling = ({info}) => {
                           await instance.delete(`/bills/${row.invoice_id}`);
                           handleClose();
                           // Refresh the data
-                          const response = await instance.get('/bills');
+                          const response = await instance.get(`/bills/client/${row.client_id}`);
                           setData(response.data);
                         } catch (error) {
                           console.error('Error deleting bill:', error);

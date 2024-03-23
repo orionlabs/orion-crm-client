@@ -14,7 +14,7 @@ import BlogPage from '../BlogPage';
 import ClientBilling from './SingeClient/ClientBilling';
 
 export default function SingleClientPage() {
-  const [, setLoading] = useContext(LoadingContext);
+  const {setLoading} = useContext(LoadingContext);
   const navigate = useNavigate()
   const [clientInfo, setClientInfo] = useState([]);
   const { clientId } = useParams();

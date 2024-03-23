@@ -5,7 +5,7 @@ import { fetchClientById, updateClient } from '../../api';
 import { LoadingContext } from '../../App';
 
 const EditClient = () => {
-  const [, setLoading] = useContext(LoadingContext)
+  const {setLoading} = useContext(LoadingContext)
   const { clientId } = useParams();
 
   const [snackbarOpen, setSnackbarOpen] = useState(false);
