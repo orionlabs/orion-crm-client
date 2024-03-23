@@ -1,11 +1,11 @@
 import axios from 'axios';
 
-axios.defaults.baseURL = 'http://localhost:8080/api/v1';
-// axios.defaults.baseURL = 'https://orion-crm-server-ts.onrender.com/api/v1';
+// axios.defaults.baseURL = 'http://localhost:8080/api/v1';
+axios.defaults.baseURL = 'https://orion-crm-server-ts.onrender.com/api/v1';
 
 export const instance = axios.create({
-  baseURL: 'http://localhost:8080/api/v1', // Set the base URL for all requests
-  // baseURL: 'https://orion-crm-server-ts.onrender.com/api/v1', // Set the base URL for all requests
+  // baseURL: 'http://localhost:8080/api/v1', // Set the base URL for all requests
+  baseURL: 'https://orion-crm-server-ts.onrender.com/api/v1', // Set the base URL for all requests
   timeout: 5000, // Set the default timeout for requests to 5 seconds
   headers: {
     'Content-Type': 'application/json', // Set the default content type for requests
